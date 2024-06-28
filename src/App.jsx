@@ -27,33 +27,54 @@ function App() {
         setWeatherData(null);
       });
   };
+  // 根據天氣情況返回相應的圖片路徑
+  const getWeatherImage = (weather) => {
+    switch (weather) {
+      case "Clear":
+        return "/images/clear.png";
+      case "Clouds":
+        return "/images/clouds.png";
+      case "Rain":
+        return "/images/rain.png";
+      case "Snow":
+        return "/images/snow.png";
+      case "Thunderstorm":
+        return "/images/thunderstorm.png";
+      case "Drizzle":
+        return "/images/drizzle.png";
+      default:
+        return "/images/default.png";
+    }
+  };
   return (
     <div className="card">
       <Search handleSubmit={handleSubmit} />
-      {error && <p className="error">{error}</p>}
+      {error && <p className="error"> {error} </p>}
       {weatherData && (
         <div className="weather">
           <img
             className="weather-image"
-            src="/images/clear.png"
+            src={getWeatherImage(weatherData.weather[0].main)}
             alt="weather image"
           />
-
-          <h1 className="temp">{Math.round(weatherData.main.temp)}°C</h1>
-          <h2 className="city">{weatherData.name}</h2>
+          <h1 className="temp"> {Math.round(weatherData.main.temp)}°C </h1>
+          <h2 className="city"> {weatherData.name} </h2>
           <div className="details">
             <div className="box">
               <img src="/images/humidity.png" alt="humidity image" />
               <div>
-                <p className="humidity">{weatherData.main.humidity}%</p>
-                <p>Humidity</p>
+                <p className="humidity"> {weatherData.main.humidity} % </p>
+                <p> Humidity </p>
               </div>
             </div>
             <div className="box">
               <img src="/images/wind.png" alt="wind speed image" />
               <div>
-                <p className="wind-speed">{weatherData.wind.speed} km/h</p>
-                <p>Wind speed</p>
+                <p className="wind-speed">
+                  {weatherData.wind.speed}
+                  km / h
+                </p>
+                <p> Wind speed </p>
               </div>
             </div>
           </div>

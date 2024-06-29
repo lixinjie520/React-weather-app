@@ -1,4 +1,4 @@
-# A simple weather app by React
+# A simple weather app 
 
 you can type the city name in the search bar to search the weather information.
 

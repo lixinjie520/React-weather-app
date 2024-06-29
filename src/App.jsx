@@ -1,29 +1,37 @@
 import Search from "./SearchForm/Search";
 import { useState } from "react";
+import axios from "axios";
 
 function App() {
+  // 儲存天氣資訊
   const [weatherData, setWeatherData] = useState(null);
+  // 儲存錯誤資訊
   const [error, setError] = useState(null);
   const handleSubmit = (cityName, clearInput) => {
-    const apiKey = "bf67762e3da7cc23b0d4605cdc37120e";
+    if (!cityName.trim()) {
+      setError("City name cannot be empty. Please enter a valid city name.");
+      setWeatherData(null);
+      return;
+    }
     const apiUrl =
       "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 
-    fetch(apiUrl + cityName + `&appid=${apiKey}`)
+    axios
+      .get(apiUrl + cityName + `&appid=${import.meta.env.VITE_WEATHER_API_KEY}`)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Invalid city name,please enter the valid one");
-        }
-        return response.json();
-      })
-      .then((data) => {
+        const data = response.data;
         setWeatherData(data);
         setError(null);
+        // 清除input框
         clearInput();
         console.log(data);
       })
       .catch((error) => {
-        setError(error.message);
+        if (error.response && error.response.status === 404) {
+          setError("Invalid city name, please enter a valid one");
+        } else {
+          setError("Error fetching the weather data");
+        }
         setWeatherData(null);
       });
   };
@@ -43,7 +51,7 @@ function App() {
       case "Drizzle":
         return "/images/drizzle.png";
       default:
-        return "/images/default.png";
+        return "/images/clear.png";
     }
   };
   return (
@@ -63,7 +71,7 @@ function App() {
             <div className="box">
               <img src="/images/humidity.png" alt="humidity image" />
               <div>
-                <p className="humidity"> {weatherData.main.humidity} % </p>
+                <p className="humidity"> {weatherData.main.humidity}%</p>
                 <p> Humidity </p>
               </div>
             </div>
@@ -71,8 +79,8 @@ function App() {
               <img src="/images/wind.png" alt="wind speed image" />
               <div>
                 <p className="wind-speed">
-                  {weatherData.wind.speed}
-                  km / h
+                  {Math.floor(weatherData.wind.speed)}
+                  km/h
                 </p>
                 <p> Wind speed </p>
               </div>

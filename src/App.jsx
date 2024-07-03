@@ -1,23 +1,25 @@
 import Search from "./SearchForm/Search";
 import { useState } from "react";
 import axios from "axios";
+// import clear_img from "../public/images/clear.png";
+
+const apiUrl =
+  "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 
 function App() {
   // 儲存天氣資訊
   const [weatherData, setWeatherData] = useState(null);
   // 儲存錯誤資訊
   const [error, setError] = useState(null);
+
   const handleSubmit = (cityName, clearInput) => {
     if (!cityName.trim()) {
       setError("City name cannot be empty. Please enter a valid city name.");
       setWeatherData(null);
       return;
     }
-    const apiUrl =
-      "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
-
     axios
-      .get(apiUrl + cityName + `&appid=${import.meta.env.VITE_WEATHER_API_KEY}`)
+      .get(`${apiUrl}${cityName}&appid=${import.meta.env.VITE_WEATHER_API_KEY}`)
       .then((response) => {
         const data = response.data;
         setWeatherData(data);
@@ -37,22 +39,20 @@ function App() {
   };
   // 根據天氣情況返回相應的圖片路徑
   const getWeatherImage = (weather) => {
-    switch (weather) {
-      case "Clear":
-        return "/images/clear.png";
-      case "Clouds":
-        return "/images/clouds.png";
-      case "Rain":
-        return "/images/rain.png";
-      case "Snow":
-        return "/images/snow.png";
-      case "Thunderstorm":
-        return "/images/thunderstorm.png";
-      case "Drizzle":
-        return "/images/drizzle.png";
-      default:
-        return "/images/clear.png";
-    }
+    const validWeatherTypes = [
+      "clear",
+      "clouds",
+      "rain",
+      "snow",
+      "thunderstorm",
+      "drizzle",
+    ];
+
+    const weatherIcon = `/images/${weather.toLowerCase()}.png`;
+
+    return validWeatherTypes.includes(weather.toLowerCase())
+      ? weatherIcon
+      : "/images/clear.png";
   };
   return (
     <div className="card">

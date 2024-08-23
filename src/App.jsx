@@ -13,6 +13,7 @@ function App() {
   const [error, setError] = useState(null);
 
   const handleSubmit = (cityName, clearInput) => {
+    // 若輸入框為空時
     if (!cityName.trim()) {
       setError("City name cannot be empty. Please enter a valid city name.");
       setWeatherData(null);
@@ -21,6 +22,7 @@ function App() {
     axios
       .get(`${apiUrl}${cityName}&appid=${import.meta.env.VITE_WEATHER_API_KEY}`)
       .then((response) => {
+        // 請求成功時
         const data = response.data;
         setWeatherData(data);
         setError(null);
@@ -29,6 +31,7 @@ function App() {
         console.log(data);
       })
       .catch((error) => {
+        // 請求失敗時
         if (error.response && error.response.status === 404) {
           setError("Invalid city name, please enter a valid one");
         } else {

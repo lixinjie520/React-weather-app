@@ -1,4 +1,27 @@
-# A simple weather app
+# React Weather App
+
+This project is a learning-oriented React application built to practice API integration, data fetching, and basic data presentation using a third-party weather API.
+
+## Project Purpose
+The main purpose of this project is to understand how frontend applications communicate with external APIs, manage environment variables, and present dynamic data in a clear user interface.
+
+## Features
+- Search weather information by city name
+- Fetch weather data from a third-party API using Axios
+- Display temperature and basic weather information
+- Handle API response data and basic error scenarios
+
+## Technologies Used
+- React
+- Vite
+- JavaScript
+- Axios
+- REST API
+- Environment Variables (.env)
+
+## How to Run This Project
+1. Clone the repository
+2. Install dependencies
 
 you can type the city name in the search bar to search the weather information.
 
